@@ -6,6 +6,7 @@ from pytmx.util_pygame import load_pygame
 from support import *
 from cow import Cow
 from rabbit import Rabbit
+from npc import NPC
 class Level:
 	def __init__(self):
 
@@ -55,6 +56,10 @@ class Level:
 		
 		self.cow = Cow((912, 2496), (912, 2496, 250, 200), self.all_sprites, LAYERS['overlays'])
 		self.rabbit =Rabbit((2700, 3408), (2700, 3408, 800, 200), self.all_sprites, LAYERS['rabbit'])
+		self.NPC = NPC((864, 1200), (864, 1200, 348, 336), self.all_sprites, "elsie",)
+		self.NPC = NPC((2784, 960), (2784, 960, 768, 576), self.all_sprites, "finn",)
+		self.NPC = NPC((2208, 1632), (2208, 1632, 480, 384), self.all_sprites, "reed",)
+		self.NPC = NPC((1152, 3120), (1152, 3120, 912, 96), self.all_sprites, "sylvia",)
 
 	def run(self,dt):
 		self.all_sprites.custom_draw(self.player)

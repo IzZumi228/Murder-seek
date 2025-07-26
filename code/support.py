@@ -11,7 +11,9 @@ def import_folder(path):
     for _, _, img_files in os.walk(path):
         for image in img_files:
             full_path = f'{path}/{image}'
+            print(f"Image I am trying to load {full_path}")
             image_surface = pygame.image.load(full_path).convert_alpha()
             surface_list.append(image_surface)
 
     return surface_list
+

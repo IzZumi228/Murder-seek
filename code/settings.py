@@ -20,11 +20,11 @@ LAYERS = {
 	'ground': 1,
     'path': 2,
 	'soil': 3,
-    'buildings': 4,
-	'props': 5,
-    'main': 6,
-    'rabbit': 7,
-    'fenses': 8,
+	'props': 4,
+    'main': 5,
+    'rabbit': 6,
+    'fenses': 7,
+    'buildings': 8,
     'overlays': 9
 }
 

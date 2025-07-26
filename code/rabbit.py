@@ -104,12 +104,10 @@ class Rabbit(pygame.sprite.Sprite):
         if self.boundary_rect.collidepoint(new_rect.center):
             self.pos = new_pos
             self.rect.center = self.pos
-            print(f"new rect: {new_rect} boundary rect: {self.boundary_rect} not contains")
         else:
             self.direction = pygame.math.Vector2()
             self.state = 'idle'
             self.timer = 0
-            print(f"new rect: {new_rect} boundary rect: {self.boundary_rect} contains")
     
     def update(self, dt):
         self.timer += dt
