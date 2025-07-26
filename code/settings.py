@@ -20,12 +20,12 @@ LAYERS = {
 	'ground': 1,
     'path': 2,
 	'soil': 3,
-	'props': 4,
     'main': 5,
     'rabbit': 6,
     'fenses': 7,
-    'buildings': 8,
-    'overlays': 9
+    'props': 8,
+    'buildings': 9,
+    'overlays': 10
 }
 
 APPLE_POS = {
