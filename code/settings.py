@@ -2,7 +2,7 @@ from pygame.math import Vector2
 # screen
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
-TILE_SIZE = 64
+TILE_SIZE = 48
 
 # overlay positions 
 OVERLAY_POSITIONS = {
@@ -17,17 +17,15 @@ PLAYER_TOOL_OFFSET = {
 }
 
 LAYERS = {
-	'water': 0,
 	'ground': 1,
-	'soil': 2,
-	'soil water': 3,
-	'rain floor': 4,
-	'house bottom': 5,
-	'ground plant': 6,
-	'main': 7,
-	'house top': 8,
-	'fruit': 9,
-	'rain drops': 10
+    'path': 2,
+	'soil': 3,
+    'buildings': 4,
+	'props': 5,
+    'main': 6,
+    'rabbit': 7,
+    'fenses': 8,
+    'overlays': 9
 }
 
 APPLE_POS = {

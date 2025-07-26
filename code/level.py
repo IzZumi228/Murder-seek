@@ -4,7 +4,8 @@ from player import Player
 from sprites import Generic, Water
 from pytmx.util_pygame import load_pygame
 from support import *
-
+from cow import Cow
+from rabbit import Rabbit
 class Level:
 	def __init__(self):
 
@@ -21,32 +22,39 @@ class Level:
 	def setup(self):
 		tmx_data = load_pygame('data/map.tmx')
 
-		# house
-		for layer in ['HouseFloor', 'HouseFurnitureBottom']:
-			for x,y,surface in tmx_data.get_layer_by_name(layer).tiles():
-				Generic((x*TILE_SIZE, y*TILE_SIZE), surface, self.all_sprites, LAYERS['house bottom'])
+		
 
-		# house walls
-		for layer in ['HouseWalls', 'HouseFurnitureTop']:
-			for x,y,surface in tmx_data.get_layer_by_name(layer).tiles():
-				Generic((x*TILE_SIZE, y*TILE_SIZE), surface, self.all_sprites,)
+		
 
 		# fence
-		for x, y, surface in tmx_data.get_layer_by_name('Fence').tiles():
-			Generic((x*TILE_SIZE, y*TILE_SIZE), surface, [self.all_sprites, self.collision_sprites],)
+		for x, y, surface in tmx_data.get_layer_by_name('Fenses').tiles():
+			Generic((x*TILE_SIZE, y*TILE_SIZE), surface, [self.all_sprites, self.collision_sprites], LAYERS['fenses'])
 
-		# water
-		water_frames = import_folder("graphics/water")
-		for x, y, surface in tmx_data.get_layer_by_name('Water').tiles():
-			Water((x*TILE_SIZE, y*TILE_SIZE), water_frames, self.all_sprites)
+		for x, y, surface in tmx_data.get_layer_by_name('Buildings').tiles():
+			Generic((x*TILE_SIZE, y*TILE_SIZE), surface, [self.all_sprites, self.collision_sprites], LAYERS['buildings'])
+			
+		for x, y, surface in tmx_data.get_layer_by_name('Props').tiles():
+			Generic((x*TILE_SIZE, y*TILE_SIZE), surface, [self.all_sprites, self.collision_sprites], LAYERS['props'])
 
+		for x, y, surface in tmx_data.get_layer_by_name('Overlays').tiles():
+			Generic(
+    		    pos=(x * TILE_SIZE, y * TILE_SIZE),
+    		    surf=surface,
+    		    groups=[self.all_sprites],
+    		    z=LAYERS['overlays'],
+    		    use_hitbox=False  
+    		)
+		
 
-		self.player = Player((640, 320), self.all_sprites, self.collision_sprites)
+		self.player = Player((3360, 1520), self.all_sprites, self.collision_sprites)
 		Generic(
 			pos = (0,0),
 			surf = pygame.image.load("graphics/world/ground.png").convert_alpha(),
 			groups = self.all_sprites,
 			z = LAYERS['ground'])
+		
+		self.cow = Cow((912, 2496), (912, 2496, 250, 200), self.all_sprites, LAYERS['overlays'])
+		self.rabbit =Rabbit((2700, 3408), (2700, 3408, 800, 200), self.all_sprites, LAYERS['rabbit'])
 
 	def run(self,dt):
 		self.all_sprites.custom_draw(self.player)

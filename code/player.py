@@ -77,7 +77,7 @@ class Player(pygame.sprite.Sprite):
             self.status = f'{self.status.split("_")[0]}_idle'
 
         if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
-            self.speed = 400
+            self.speed = 800
         else:
             self.speed = 200  
 
