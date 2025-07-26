@@ -12,6 +12,11 @@ class NPC(pygame.sprite.Sprite):
         
         self.import_assets()
 
+        self.dialogues = {
+            "who": f"My name is {name.capitalize()}. I work around here.",
+            "seen": "I haven't seen anything strange... yet."
+        }
+
        
         self.timer = 0
         self.move_duration = random.uniform(1, 3)
