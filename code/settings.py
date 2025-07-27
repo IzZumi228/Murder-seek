@@ -48,3 +48,10 @@ PURCHASE_PRICES = {
 	'corn': 4,
 	'tomato': 5
 }
+
+CHARACTER_LOCATIONS = {
+    'Sylvia': 'Workshop',
+    'Marlowe': 'Farm Shop',
+    'Elsie': 'Garden',
+    'Jasper': 'Lake'
+}
