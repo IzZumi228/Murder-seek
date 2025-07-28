@@ -11,7 +11,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=api_key)
 
-
+#roles are based on indexes - characters[0] is murdere, for the rest look in system prompt
 characters = ["Sylvia", "Marlowe", "Elsie", "Jasper"]
 random.shuffle(characters)
 
@@ -104,3 +104,6 @@ def generate_dialogues():
 
 
 
+def get_actual_murderer():
+    print(characters[0])
+    return characters[0]
