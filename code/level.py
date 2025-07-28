@@ -9,8 +9,26 @@ from rabbit import Rabbit
 from npc import NPC
 from dialgue_manager import DialogueManager
 from ai import *
+from game_over_trigger import FinishingTrigger
 
-
+mock_dialogue = { 
+	'Sylvia': {
+		'statement': 'I was helping Elsie in the greenhouses most of the day, checking on some of her new plants. We stayed inside away from the cold and didn’t step outside much.', 
+		'observation': 'The wind was picking up later in the afternoon, but I didn’t notice anything out of the ordinary near the main house.'
+		}, 
+	'Jasper': {
+		'statement': 'I spent the day with Elsie, went over some of the water samples she collected from the nearby stream. We were mostly outside, chatting and moving around the property together.', 
+		'observation': 'Sylvia’s workshop was strange oddly quiet the entire day, which is not like her at all. Usually, you’d hear the hammer and saw from there without fail.'
+		}, 
+	'Elsie': {
+		'statement': 'I was with Jasper, helping him go through some plants by the riverbank and talking about what’s growing nearby this season. We didn’t really go near the house much until evening.', 
+		'observation': 'Marlowe didn’t show up at the Farm Shop like he usually does; I found that a bit strange since he’s normally there every day.'
+		}, 
+	'Marlowe': {
+		'statement': "I wasn’t at the Farm Shop because I had to deal with some unexpected paperwork in town; it kept me away longer than I thought. I made sure to take care of the business early, so I wouldn't miss much here.", 
+		'observation': 'Nothing out of the ordinary caught my eye around the farm today. It seemed like a regular day from where I was.'
+		}
+}
 
 
 
@@ -28,7 +46,15 @@ class Level:
 		#dialogues
 		self.dialogue_manager = DialogueManager()
 		self.npcs = []
-		self.current_dialogues = generate_dialogues()
+		self.current_dialogues = mock_dialogue
+
+		#final decision variables
+		self.actual_murderer = "Sylvia"  # or whatever the correct answer is
+		self.game_over = False
+		self.final_guess = None
+		self.game_over_time = None
+
+
 
 
 		self.setup()
@@ -79,43 +105,90 @@ class Level:
 		self.npcs.append(NPC((2208, 1632), (2208, 1632, 480, 384), self.all_sprites, "Marlowe", self.current_dialogues["Marlowe"]))
 		self.npcs.append(NPC((1152, 3120), (1152, 3120, 912, 96), self.all_sprites, "Sylvia", self.current_dialogues['Sylvia']))
 
+
+		self.finishing_trigger = FinishingTrigger((3550, 1708), self.all_sprites)
+		
+
 	def run(self, dt):
+
+		if self.game_over:
+			self.dialogue_manager.draw(self.display_surface)
+			# after 3 seconds, restart
+			if pygame.time.get_ticks() - self.game_over_time >= 3000:
+				self.restart_level()
+
+			return
+		
+		
+
 		self.all_sprites.custom_draw(self.player)
 		self.all_sprites.update(dt)
 
-    	# check if player is near any NPC
-		in_proximity = None
+		in_proximity_npc = None
+		in_proximity_finish_trigger = False
+
 		for npc in self.npcs:
 			if self.player.rect.colliderect(npc.rect.inflate(40, 40)):
-				in_proximity = npc
+				in_proximity_npc = npc
 				break
 
-    	# handle interaction UI
-		if not in_proximity:
+		if self.player.rect.colliderect(self.finishing_trigger.rect.inflate(40, 40)):
+			in_proximity_finish_trigger = True
+
+		# show npc dialogue UI
+		if in_proximity_npc:
+			self.dialogue_manager.draw(self.display_surface)
+			self.dialogue_manager.set_options([
+				("Who are you?", in_proximity_npc.intoduction),
+				("What have you been doing on the day of the murder?", in_proximity_npc.dialogues["statement"]),
+				("Have you noticed anything unusual?", in_proximity_npc.dialogues["observation"]),
+			])
+		elif in_proximity_finish_trigger:
+			self.dialogue_manager.draw(self.display_surface)
+			self.dialogue_manager.set_options([
+				("The Murderer is Sylvia", "Are you sure?"),
+				("The Murderer is Marlowe", "Are you sure?"),
+				("The Murderer is Jasper", "Are you sure?"),
+				("The Murderer is Elsie", "Are you sure?"),
+			])
+		else:
 			self.dialogue_manager.close()
 			self.dialogue_manager.clear_options()
-		else:
-			self.dialogue_manager.draw(self.display_surface)
-			
 
-			self.dialogue_manager.set_options([
-				("Who are you?", npc.intoduction),
-    	        ("What have you been doing on the day of the murder?", npc.dialogues["statement"]),
-    	        ("Have you noticed anything unusual?", npc.dialogues["observation"]),
-    	    ])
+		# Handle clicks
+		mouse_pos = pygame.mouse.get_pos()
+		mouse_pressed = pygame.mouse.get_pressed()[0]
+		clicked, chosen_label = self.dialogue_manager.handle_click(mouse_pos, mouse_pressed, self.dialogue_manager.option_rects)
 
-    	    # handle mouse clicks
-			mouse_pos = pygame.mouse.get_pos()
-			mouse_pressed = pygame.mouse.get_pressed()[0]
-			self.dialogue_manager.handle_click(mouse_pos, mouse_pressed, self.dialogue_manager.option_rects)
+		if in_proximity_finish_trigger and clicked and chosen_label:
+			if "The Murderer is" in chosen_label:
+				self.final_guess = chosen_label.replace("The Murderer is ", "")
+				if self.final_guess == self.actual_murderer:
+					self.end_game(victory=True)
+				else:
+					self.end_game(victory=False)
 
-    	# ESC to close
+		# ESC to close
 		keys = pygame.key.get_pressed()
 		if keys[pygame.K_ESCAPE]:
 			self.dialogue_manager.close()
+				
 
-		
 
+
+	def end_game(self, victory):
+		self.dialogue_manager.clear_options()
+		if victory:
+			self.dialogue_manager.open("You were right! Justice has been served. Launching new round...")
+		else:
+			self.dialogue_manager.open(f"That was incorrect. The real murderer was {self.actual_murderer}. Launching new round...")
+
+		self.game_over = True
+		self.game_over_time = pygame.time.get_ticks()
+
+	def restart_level(self):
+		print("restarting...")
+		self.__init__()
 
 
 

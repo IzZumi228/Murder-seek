@@ -36,15 +36,17 @@ class DialogueManager:
     def handle_click(self, mouse_pos, mouse_pressed, option_rects):
         """Handle mouse clicks - call this from your main game loop"""
         clicked = False
+        chosen_label = None
         if mouse_pressed:
-            for rect, _, response_text in option_rects:
+            for rect, label, response_text in option_rects:
                 if rect.collidepoint(mouse_pos):
                     self.open(response_text)
                     clicked = True
+                    chosen_label = label
                     break
         
         self.mouse_was_pressed = mouse_pressed
-        return clicked
+        return clicked, chosen_label
     
     def draw(self, surface):
         self.option_rects = []  # clear old option rects

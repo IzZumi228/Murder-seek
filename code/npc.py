@@ -5,7 +5,7 @@ from support import *
 import random
 
 class NPC(pygame.sprite.Sprite):
-    def __init__(self, pos, boundary, group, name, dialogues, z=LAYERS['overlays'], ):
+    def __init__(self, pos, boundary, group, name, dialogues, z=LAYERS['overlays'],):
         super().__init__(group)
 
         self.name = name
