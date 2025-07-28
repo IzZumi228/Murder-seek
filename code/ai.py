@@ -105,5 +105,4 @@ def generate_dialogues():
 
 
 def get_actual_murderer():
-    print(characters[0])
     return characters[0]
