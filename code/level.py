@@ -8,6 +8,12 @@ from cow import Cow
 from rabbit import Rabbit
 from npc import NPC
 from dialgue_manager import DialogueManager
+from ai import *
+
+
+
+
+
 
 class Level:
 	def __init__(self):
@@ -22,12 +28,15 @@ class Level:
 		#dialogues
 		self.dialogue_manager = DialogueManager()
 		self.npcs = []
+		self.current_dialogues = generate_dialogues()
 
 
 		self.setup()
 
 	def setup(self):
 		tmx_data = load_pygame('data/map.tmx')
+
+	
 
 		
 
@@ -65,39 +74,48 @@ class Level:
 
 
 		self.npcs = []
-		self.npcs.append(NPC((864, 1200), (864, 1200, 348, 336), self.all_sprites, "elsie"))
-		self.npcs.append(NPC((2784, 960), (2784, 960, 768, 576), self.all_sprites, "finn"))
-		self.npcs.append(NPC((2208, 1632), (2208, 1632, 480, 384), self.all_sprites, "reed"))
-		self.npcs.append(NPC((1152, 3120), (1152, 3120, 912, 96), self.all_sprites, "sylvia"))
+		self.npcs.append(NPC((864, 1200), (864, 1200, 348, 336), self.all_sprites, "Elsie", self.current_dialogues['Elsie']))
+		self.npcs.append(NPC((2784, 960), (2784, 960, 768, 576), self.all_sprites, "Jasper", self.current_dialogues['Jasper']))
+		self.npcs.append(NPC((2208, 1632), (2208, 1632, 480, 384), self.all_sprites, "Marlowe", self.current_dialogues["Marlowe"]))
+		self.npcs.append(NPC((1152, 3120), (1152, 3120, 912, 96), self.all_sprites, "Sylvia", self.current_dialogues['Sylvia']))
 
 	def run(self, dt):
 		self.all_sprites.custom_draw(self.player)
 		self.all_sprites.update(dt)
 
-		# Check if player is near any NPC
+    	# check if player is near any NPC
 		in_proximity = None
 		for npc in self.npcs:
 			if self.player.rect.colliderect(npc.rect.inflate(40, 40)):
 				in_proximity = npc
 				break
 
-		# If no NPC is near, close dialogue
+    	# handle interaction UI
 		if not in_proximity:
 			self.dialogue_manager.close()
+			self.dialogue_manager.clear_options()
+		else:
+			self.dialogue_manager.draw(self.display_surface)
+			
 
-		# Dialogue input
+			self.dialogue_manager.set_options([
+				("Who are you?", npc.intoduction),
+    	        ("What have you been doing on the day of the murder?", npc.dialogues["statement"]),
+    	        ("Have you noticed anything unusual?", npc.dialogues["observation"]),
+    	    ])
+
+    	    # handle mouse clicks
+			mouse_pos = pygame.mouse.get_pos()
+			mouse_pressed = pygame.mouse.get_pressed()[0]
+			self.dialogue_manager.handle_click(mouse_pos, mouse_pressed, self.dialogue_manager.option_rects)
+
+    	# ESC to close
 		keys = pygame.key.get_pressed()
-		if in_proximity and keys[pygame.K_e]:  # E to ask about unusual things
-			self.dialogue_manager.open(in_proximity.dialogues['seen'])
-
-		elif in_proximity and keys[pygame.K_q]:  # Q to ask who they are
-			self.dialogue_manager.open(in_proximity.dialogues['who'])
-
-		elif keys[pygame.K_ESCAPE]:
+		if keys[pygame.K_ESCAPE]:
 			self.dialogue_manager.close()
 
-		# Draw dialogue
-		self.dialogue_manager.draw(self.display_surface)
+		
+
 
 
 

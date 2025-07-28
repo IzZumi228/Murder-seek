@@ -55,3 +55,11 @@ CHARACTER_LOCATIONS = {
     'Elsie': 'Garden',
     'Jasper': 'Lake'
 }
+
+CHARACTER_INTRODUCTIONS = {
+    'Sylvia': "I'm Sylvia. I keep the buildings standing around here—barns, fences, sheds, you name it. I prefer the sound of hammering to talking, but I’ll help if I can.",
+    'Marlowe': "Name’s Marlowe. I drift from place to place, selling rare seeds and oddities. This farm’s quiet… good soil, strange energy. Thought I’d stay a while.",
+    'Elsie': "Oh! I'm Elsie. I care for the greenhouse and all the plants around the farm. If it’s green and growing, chances are I’ve had a hand in it.",
+    'Jasper': "Jas Holt. I fish, I chat, I keep an ear to the ground. If you’re looking for gossip or catfish, I’m your guy."
+}
+

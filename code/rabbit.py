@@ -62,7 +62,7 @@ class Rabbit(pygame.sprite.Sprite):
         ]
         self.direction = random.choice(directions)
         
-        # Update status based on direction
+        # update status based on direction
         if self.direction.x > 0:
             self.status = 'right'
         elif self.direction.x < 0:
@@ -94,13 +94,13 @@ class Rabbit(pygame.sprite.Sprite):
                 self.status = 'up'
     
     def move(self, dt):
-        # Try moving in the current direction
+        # try moving in the current direction
         move_vector = self.direction * self.speed * dt
         new_pos = self.pos + move_vector
         new_rect = self.rect.copy()
         new_rect.center = new_pos
         
-        # Only move if still within boundary
+        # only move if still within boundary
         if self.boundary_rect.collidepoint(new_rect.center):
             self.pos = new_pos
             self.rect.center = self.pos
