@@ -54,7 +54,9 @@ class Level:
 		self.final_guess = None
 		self.game_over_time = None
 
-
+		#audio
+		self.music = pygame.mixer.Sound("audio/ambient.mp3")
+		self.music.play(-1)
 
 
 		self.setup()

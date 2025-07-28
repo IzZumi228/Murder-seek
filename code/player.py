@@ -29,10 +29,7 @@ class Player(pygame.sprite.Sprite):
 
     def import_assets(self):
         self.animations = {'up': [],'down': [],'left': [],'right': [],
-						   'right_idle':[],'left_idle':[],'up_idle':[],'down_idle':[],
-						   'right_hoe':[],'left_hoe':[],'up_hoe':[],'down_hoe':[],
-						   'right_axe':[],'left_axe':[],'up_axe':[],'down_axe':[],
-						   'right_water':[],'left_water':[],'up_water':[],'down_water':[]}
+						   'right_idle':[],'left_idle':[],'up_idle':[],'down_idle':[],}
         
         base_dir = os.path.dirname(os.path.abspath(__file__))  # Absolute path to current script
         graphics_dir = os.path.join(base_dir, '..', 'graphics', 'character')
