@@ -1,10 +1,10 @@
 # Murder Mystery game using python, pygame, with dynamically generated dialogues
 
-**Murder seek** is a pixel-art style, inspired by Stardew Valley mystery adventure game built in Python using Pygame. You play as a cat-detective, and your task is to interact with NPCs to detec conflitcing alibis, false accusations, and find true murderer. Murderer, clues and alibis are randomized each round, and dialogues are generated using ChatGPT by OpenAI. (the original name, murder-seek was due to first version used Deepseek, but then I found chatgpt gave more consistent and natural lines)
+**Murder seek** is a pixel-art style, inspired by Stardew Valley mystery adventure game built in Python using Pygame. You play as a cat-detective, and your task is to interact with NPCs to detect conflitcing alibis, false accusations, and find true murderer. Murderer, clues and alibis are randomized each round, and dialogues are generated using ChatGPT by OpenAI. (the original name, murder-seek was due to first version used Deepseek, but then I found chatgpt gave more consistent and natural lines)
 This is a project of me and my group during Olemiss' HackBeta hackaton in 2025. I completely reworked game loop, mechanics, and api calls
 
 To run:
- - install dependencies - pygame, pytmx (to work with tiled maps), and openai
+ - install dependencies - pygame, pytmx (to work with tiled maps), dotenv, and openai
  - set up your OPENAI_API_KEY in .env file
  - run the main.py
 
